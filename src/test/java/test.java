@@ -18,6 +18,7 @@ public class test {
         options.addArguments("--remote-allow-origins=*");
 
         WebDriver driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS); // implicit wait time
         driver.get("https://www.cargurus.com/"); // navigate to the website
         String actualTitle = driver.getTitle(); // returns the Title of the page
@@ -48,6 +49,8 @@ public class test {
         driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
         driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
         driver.findElement(By.id("dealFinderForm_0")).click();
+
+
 
     }
 

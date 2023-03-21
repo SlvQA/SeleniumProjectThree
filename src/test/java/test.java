@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -35,16 +36,14 @@ public class test {
         String allModels = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_modelSelect\"]/option[1]" )).getText()); // checking if the default value of "By Make/Model" is "All Makes"
         Assert.assertEquals(allModels, "All Models", "Expected: \"All Models\"" + ", Actual: "  + allModels + ".");
 
-        String expectedListOfModels[] = {"All Models", "Aventador", "Huracan", "Urus",
-                "400GT", "Centenario", "Countach", "Diablo", "Espada", "Gallardo", "Murcielago"};
+        List<String> expectedListOfModels = Arrays.asList("All Models", "Aventador", "Huracan", "Urus",
+                "400GT", "Centenario", "Countach", "Diablo", "Espada", "Gallardo", "Murcielago");
 
-//        String listOfModels [] = driver.findElements(By.id("carPickerUsed_modelSelect"));
-//        List<String> models = new ArrayList<>();
-//        for (element : listOfModels){
-//            models.add(element.getText());}
-//        System.out.println(models);
-//        Assert.assertEquals(models, expectedListOfModels,
-//                "The lists are not matching.");
+        List<WebElement> listOfModels = driver.findElements(By.xpath("//*[@id=\"carPickerUsed_modelSelect\"]/option"));
+        List<String> list1 = new ArrayList<>();
+        for (WebElement element : listOfModels){
+            list1.add(element.getText());}
+        Assert.assertEquals(List.of(list1), List.of(expectedListOfModels),"The lists are not matching.");
 
         driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
         driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");

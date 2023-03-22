@@ -28,30 +28,40 @@ public class test {
 
         driver.findElement(By.xpath("//*[@id=\"heroSearch\"]/label[2]")).click(); // clicking on "Buy Used" button
 
-        String allMakes = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_makerSelect\"]/option[1]" )).getText()); // checking if the default value of "By Make/Model" is "All Makes"
-        Assert.assertEquals(allMakes, "All Makes", "Expected: \"All Makes\"" + ", Actual: "  + allMakes + ".");
+        String allMakes = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_makerSelect\"]/option[1]")).getText()); // checking if the default value of "By Make/Model" is "All Makes"
+        Assert.assertEquals(allMakes, "All Makes", "Expected: \"All Makes\"" + ", Actual: " + allMakes + ".");
 
         driver.findElement(By.xpath("//*[@id=\"carPickerUsed_makerSelect\"]/optgroup[2]/option[52]")).click(); // selecting Lamborgini
 
-        String allModels = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_modelSelect\"]/option[1]" )).getText()); // checking if the default value of "By Make/Model" is "All Makes"
-        Assert.assertEquals(allModels, "All Models", "Expected: \"All Models\"" + ", Actual: "  + allModels + ".");
+        String allModels = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_modelSelect\"]/option[1]")).getText()); // checking if the default value of "By Make/Model" is "All Makes"
+        Assert.assertEquals(allModels, "All Models", "Expected: \"All Models\"" + ", Actual: " + allModels + ".");
 
-        List<String> expectedListOfModels = Arrays.asList("All Models", "Aventador", "Huracan", "Urus",
-                "400GT", "Centenario", "Countach", "Diablo", "Espada", "Gallardo", "Murcielago");
+        List<String> expectedListOfModels = Arrays.asList("All Models", "Aventador", "Gallardo", "Huracan", "Urus",
+                "400GT", "Centenario", "Countach", "Diablo", "Espada", "Murcielago");
 
-        List<WebElement> listOfModels = driver.findElements(By.xpath("//*[@id=\"carPickerUsed_modelSelect\"]/option"));
-        List<String> list1 = new ArrayList<>();
-        for (WebElement element : listOfModels){
-            list1.add(element.getText());}
-        Assert.assertEquals(List.of(list1), List.of(expectedListOfModels),"The lists are not matching.");
+        WebElement dropDownModel = driver.findElement(By.id("carPickerUsed_modelSelect")); // getting the list of options in the dropdown with getOptions()
+        Select s = new Select(dropDownModel);
 
-        driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
-        driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
-        driver.findElement(By.id("dealFinderForm_0")).click();
+        List<WebElement> op = s.getOptions();
+        List<String> all = new ArrayList<>();
+        for (WebElement e : op) {
+            all.add(e.getText());}
+        //System.out.println("--ACTUAL-- " + all + "\n--EXPECTED-- " + expectedListOfModels);
+        Assert.assertEquals(all, expectedListOfModels, "The lists are not equal.");
+
+            driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
+            driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
+            driver.findElement(By.id("dealFinderForm_0")).click();
+
+        //List<WebElement> resultsAmount = driver.findElements(By.cssSelector("div[class='SxbqMk'][data-cg-ft='car-blade'][data-testid='srp-tile']"));
+        List<WebElement> resultsAmount = driver.findElements(By.xpath("//a[@data-cg-ft='car-blade-link'][not(contains(@href, 'FEATURED'))]"));
+        int resultsN = resultsAmount.size();
+        int expN = 15;
+        Assert.assertTrue(resultsN == expN, "Error");
+        System.out.println("There are not " + expN + " results, but " + resultsN + ".");
 
 
 
+
+        }
     }
-
-
-}

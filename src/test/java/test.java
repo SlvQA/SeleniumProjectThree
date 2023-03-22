@@ -53,14 +53,18 @@ public class test {
             driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
             driver.findElement(By.id("dealFinderForm_0")).click();
 
-        //List<WebElement> resultsAmount = driver.findElements(By.cssSelector("div[class='SxbqMk'][data-cg-ft='car-blade'][data-testid='srp-tile']"));
+            Thread.sleep(700);
         List<WebElement> resultsAmount = driver.findElements(By.xpath("//a[@data-cg-ft='car-blade-link'][not(contains(@href, 'FEATURED'))]"));
         int resultsN = resultsAmount.size();
         int expN = 15;
-        Assert.assertTrue(resultsN == expN, "Error");
         System.out.println("There are not " + expN + " results, but " + resultsN + ".");
+        Assert.assertEquals(expN, resultsN, "Error");
 
 
+// make this check for every listing of 15 on the page, not only for the first one; with for-each loop
+        String textLGexpected = "Lamborghini Gallardo";
+        String textLG = driver.findElement(By.cssSelector("h4[class='vO42pn']")).getText(); // checking if the name matches the one I used while signing up
+        Assert.assertTrue(textLG.contains(textLGexpected));
 
 
         }

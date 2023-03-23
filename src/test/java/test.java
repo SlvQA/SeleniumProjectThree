@@ -67,7 +67,7 @@ public class test {
 
         driver.findElement(By.xpath("//*[@id=\"sort-listing\"]/option[3]")).click();
 
-        List<WebElement> resultsToSort = driver.findElements(By.cssSelector("//span[class='JzvPHo']//span[not(@class='pMCT9h')]"));
+        List<WebElement> resultsToSort = driver.findElements(By.cssSelector("//span[class='JzvPHo']"));
         if (resultsToSort.size()==0){
             throw new RuntimeException("List is Empty");
         }else{

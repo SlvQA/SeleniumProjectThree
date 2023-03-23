@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class test{
+public class test {
     @Test
     public void test() throws InterruptedException {
         ChromeOptions options = new ChromeOptions();
@@ -43,42 +43,37 @@ public class test{
         List<WebElement> op = s.getOptions();
         List<String> all = new ArrayList<>();
         for (WebElement e : op) {
-            all.add(e.getText());}
+            all.add(e.getText());
+        }
         //System.out.println("--ACTUAL-- " + all + "\n--EXPECTED-- " + expectedListOfModels);
         Assert.assertEquals(all, expectedListOfModels, "The lists are not equal.");
 
-            driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
-            driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
-            driver.findElement(By.id("dealFinderForm_0")).click();
-
-            Thread.sleep(700);
-
-        Map<String, Object> pf = new HashMap<>(); //disable pop-ups
-        pf.put("profile.default_content_setting_values.notifications", 2);
-        ChromeOptions p = new ChromeOptions();
-        p.setExperimentalOption("prefs", pf);
+        driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
+        driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
+        driver.findElement(By.id("dealFinderForm_0")).click();
 
         List<WebElement> resultsAmount = driver.findElements(By.xpath("//a[@data-cg-ft='car-blade-link'][not(contains(@href, 'FEATURED'))]"));
         int resultsN = resultsAmount.size();
         int expN = 15;
-        System.out.println("There are not " + expN + " results, but " + resultsN + ".");
+        System.out.println("Expected amount of results: " + expN + ". \nActual amount of results: " + resultsN + ".");
         Assert.assertEquals(expN, resultsN, "Error");
 
-
-// make this check for every listing of 15 on the page, not only for the first one; with for-each loop
-        List<String> eachResult = new ArrayList<>();
-        for (WebElement element : resultsAmount){
+        List<String> eachResult = new ArrayList<>(); // list of results sorted by default
+        for (WebElement element : resultsAmount) {
             eachResult.add(element.getText());}
-            String textLGexpected = "Lamborghini Gallardo";
-            String textLG = "" + eachResult;
-            Assert.assertTrue(textLG.contains(textLGexpected)); // checking if the name matches on all search results
+        String textLGexpected = "Lamborghini Gallardo";
+        String textLG = "" + eachResult;
+        Assert.assertTrue(textLG.contains(textLGexpected)); // checking if the name matches on all the search results
 
         driver.findElement(By.xpath("//*[@id=\"sort-listing\"]/option[3]")).click();
 
+        List<WebElement> resultsToSort = driver.findElements(By.cssSelector("span[class='JzvPHo']"));
+        List<String> list1 = new ArrayList<>();
+        for (WebElement strings : resultsToSort) {
+            list1.add(strings.getText());
+            }
+        System.out.println("List: " + list1);
 
 
-        }
-
-
-        }
-
+    }
+}

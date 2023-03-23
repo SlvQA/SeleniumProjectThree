@@ -7,12 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
-public class test {
+public class test{
     @Test
     public void test() throws InterruptedException {
         ChromeOptions options = new ChromeOptions();
@@ -20,7 +17,6 @@ public class test {
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS); // implicit wait time
         driver.get("https://www.cargurus.com/"); // navigate to the website
         String actualTitle = driver.getTitle(); // returns the Title of the page
         String expectedTitle = "Buy & Sell Cars: Reviews, Prices, and Financing - CarGurus";
@@ -54,6 +50,12 @@ public class test {
             driver.findElement(By.id("dealFinderForm_0")).click();
 
             Thread.sleep(700);
+
+        Map<String, Object> pf = new HashMap<>(); //disable pop-ups
+        pf.put("profile.default_content_setting_values.notifications", 2);
+        ChromeOptions p = new ChromeOptions();
+        p.setExperimentalOption("prefs", pf);
+
         List<WebElement> resultsAmount = driver.findElements(By.xpath("//a[@data-cg-ft='car-blade-link'][not(contains(@href, 'FEATURED'))]"));
         int resultsN = resultsAmount.size();
         int expN = 15;
@@ -62,10 +64,14 @@ public class test {
 
 
 // make this check for every listing of 15 on the page, not only for the first one; with for-each loop
-        String textLGexpected = "Lamborghini Gallardo";
-        String textLG = driver.findElement(By.cssSelector("h4[class='vO42pn']")).getText(); // checking if the name matches the one I used while signing up
-        Assert.assertTrue(textLG.contains(textLGexpected));
+        List<String> eachResult = new ArrayList<>();
+        for (WebElement element : resultsAmount){
+            eachResult.add(element.getText());}
+            String textLGexpected = "Lamborghini Gallardo";
 
+            //String textLG = driver.findElement(By.cssSelector("h4[class='vO42pn']")).getText(); // checking if the name matches the one I used while signing up
+            Assert.assertTrue(eachResult.contains(textLGexpected));
+        }
 
         }
-    }
+

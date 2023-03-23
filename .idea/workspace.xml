@@ -48,6 +48,11 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\P1\Projects\project-three\src\test" />
+    </key>
+  </component>
   <component name="RunManager" selected="TestNG.test.test">
     <configuration name="projectTwo" type="TestNG" temporary="true" nameIsGenerated="true">
       <option name="PACKAGE_NAME" value="" />
@@ -164,7 +169,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679469624955</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Merge remote-tracking branch 'SeleniumProjectThree/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/test/java/test.java">
+      <created>1679538832394</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1679538832394</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

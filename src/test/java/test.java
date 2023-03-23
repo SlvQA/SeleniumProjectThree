@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class test{
     @Test
@@ -17,6 +18,7 @@ public class test{
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get("https://www.cargurus.com/"); // navigate to the website
         String actualTitle = driver.getTitle(); // returns the Title of the page
         String expectedTitle = "Buy & Sell Cars: Reviews, Prices, and Financing - CarGurus";
@@ -68,9 +70,8 @@ public class test{
         for (WebElement element : resultsAmount){
             eachResult.add(element.getText());}
             String textLGexpected = "Lamborghini Gallardo";
-
-            //String textLG = driver.findElement(By.cssSelector("h4[class='vO42pn']")).getText(); // checking if the name matches the one I used while signing up
-            Assert.assertTrue(eachResult.contains(textLGexpected));
+            String textLG = "" + eachResult; //driver.findElement(By.cssSelector("h4[class='vO42pn']")).getText(); // checking if the name matches the one I used while signing up
+            Assert.assertTrue(textLG.contains(textLGexpected));
         }
 
         }

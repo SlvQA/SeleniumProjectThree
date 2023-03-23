@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +19,7 @@ public class test {
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get("https://www.cargurus.com/"); // navigate to the website
         String actualTitle = driver.getTitle(); // returns the Title of the page
         String expectedTitle = "Buy & Sell Cars: Reviews, Prices, and Financing - CarGurus";
@@ -67,7 +68,13 @@ public class test {
 
         driver.findElement(By.xpath("//*[@id=\"sort-listing\"]/option[3]")).click();
 
-        List<WebElement> resultsToSort = driver.findElements(By.cssSelector("span[class='JzvPHo']"));
+        List<WebElement> resultsToSort = driver.findElements(By.cssSelector("//span[class='JzvPHo']//span[not(@class='pMCT9h')]"));
+        if (resultsToSort.size()==0){
+            throw new RuntimeException("List is Empty");
+        }else{
+            System.out.println("The list is of size: " + resultsAmount.size() + ".");
+        }
+
         List<String> list1 = new ArrayList<>();
         for (WebElement strings : resultsToSort) {
             list1.add(strings.getText());

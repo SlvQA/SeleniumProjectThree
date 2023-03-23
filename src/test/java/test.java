@@ -70,9 +70,15 @@ public class test{
         for (WebElement element : resultsAmount){
             eachResult.add(element.getText());}
             String textLGexpected = "Lamborghini Gallardo";
-            String textLG = "" + eachResult; //driver.findElement(By.cssSelector("h4[class='vO42pn']")).getText(); // checking if the name matches the one I used while signing up
-            Assert.assertTrue(textLG.contains(textLGexpected));
+            String textLG = "" + eachResult;
+            Assert.assertTrue(textLG.contains(textLGexpected)); // checking if the name matches on all search results
+
+        driver.findElement(By.xpath("//*[@id=\"sort-listing\"]/option[3]")).click();
+
+
+
         }
+
 
         }
 

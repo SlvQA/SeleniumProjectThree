@@ -29,7 +29,7 @@ public class test {
         String allMakes = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_makerSelect\"]/option[1]")).getText()); // checking if the default value of "By Make/Model" is "All Makes"
         Assert.assertEquals(allMakes, "All Makes", "Expected: \"All Makes\"" + ", Actual: " + allMakes + ".");
 
-        driver.findElement(By.xpath("//*[@id=\"carPickerUsed_makerSelect\"]/optgroup[2]/option[52]")).click(); // selecting Lamborgini
+        new Select(driver.findElement(By.id("carPickerUsed_makerSelect"))).selectByVisibleText("Lamborghini"); // selecting Lamborghini
 
         String allModels = String.valueOf(driver.findElement(By.xpath("//*[@id=\"carPickerUsed_modelSelect\"]/option[1]")).getText()); // checking if the default value of "By Make/Model" is "All Makes"
         Assert.assertEquals(allModels, "All Models", "Expected: \"All Models\"" + ", Actual: " + allModels + ".");
@@ -48,7 +48,7 @@ public class test {
         //System.out.println("--ACTUAL-- " + all + "\n--EXPECTED-- " + expectedListOfModels);
         Assert.assertEquals(all, expectedListOfModels, "The lists are not equal.");
 
-        driver.findElement(By.cssSelector("#carPickerUsed_modelSelect > optgroup.activeModelGroup > option:nth-child(2)")).click(); // selecting Gallardo
+        new Select(driver.findElement(By.id("carPickerUsed_modelSelect"))).selectByVisibleText("Gallardo"); // selecting Gallardo
         driver.findElement(By.id("dealFinderZipUsedId_dealFinderForm")).sendKeys("22031");
         driver.findElement(By.id("dealFinderForm_0")).click();
 
@@ -65,21 +65,58 @@ public class test {
         String textLG = "" + eachResult;
         Assert.assertTrue(textLG.contains(textLGexpected)); // checking if the name matches on all the search results
 
-        driver.findElement(By.xpath("//*[@id=\"sort-listing\"]/option[3]")).click();
+        new Select(driver.findElement(By.id("sort-listing"))).selectByVisibleText("Lowest price first"); // sort by lowest price first
+        Thread.sleep(500);
 
-        List<WebElement> resultsToSort = driver.findElements(By.cssSelector("span[class='JzvPHo']"));
-        if (resultsToSort.size()==0){
-            throw new RuntimeException("List is Empty");
-        }else{
-            System.out.println("The list is of size: " + resultsAmount.size() + ".");
+        List <WebElement> resultsToSortPrices = driver.findElements(By.xpath("//span[@class='JzvPHo'][not(contains(@href, 'FEATURED'))]"));
+
+        List <Double> prices = new ArrayList<>(); // making a sorting list
+        for (int i = 1; i < resultsToSortPrices.size(); i++){
+            String price = resultsToSortPrices.get(i).getText();
+            price = price.split(" ")[0];
+            prices.add(Double.parseDouble(price.replace("$","").replace(",", "")));
         }
 
-        List<String> list1 = new ArrayList<>();
-        for (WebElement strings : resultsToSort) {
-            list1.add(strings.getText());
-            }
-        System.out.println("List: " + list1);
+        for (int i = 1; i < prices.size(); i++){
+            Assert.assertTrue(prices.get(i-1) <= prices.get(i), "Ascending order is incorrect.");
+        }
 
+        new Select(driver.findElement(By.id("sort-listing"))).selectByVisibleText("Highest mileage first"); // sorting by highest mileage
+        Thread.sleep(500);
+        List <WebElement> resultsToSortMileage = driver.findElements(By.xpath("//p[@class='JKzfU4 umcYBP'][not(contains(@href, 'FEATURED'))]"));
+        List <Double> mileageList = new ArrayList<>(); // making a sorting list
+        for (int i = 1; i < resultsToSortMileage.size(); i++){
+            String mileage = resultsToSortMileage.get(i).getText();
+            mileageList.add(Double.parseDouble(mileage.replace(" mi","").replace(",", "")));
+        }
 
+        for (int i = 1; i < mileageList.size(); i++){
+            Assert.assertTrue(mileageList.get(i-1) >= mileageList.get(i), "Descending order is incorrect."); // checking if descending order is correct
+        }
+
+        Thread.sleep(500);
+        WebElement coupeAWD = driver.findElement(By.xpath("//input[@value='Coupe AWD']")); // finding coupeAWD checkBox
+        if (!(coupeAWD.isSelected())){
+            driver.findElement(By.xpath("//input[@value='Coupe AWD']/following-sibling::p")).click(); // if it is not marked, mark it
+        }
+
+        Thread.sleep(500);
+        List <WebElement> awd = driver.findElements(By.xpath("//h4[@class='vO42pn'][not(contains(@href, 'FEATURED'))]")); // getting a list of results
+        for (WebElement webElement : awd) {
+            String awdString = webElement.getText();
+            //System.out.println(awdString);
+            Assert.assertTrue(awdString.contains("Coupe AWD"), "The titles don't contain Coupe AWD"); // checking if the results contain Coule AWD text
+        }
+        Thread.sleep(500);
+        awd.get(awd.size()-1).click(); // clicking on the last result on the results page
+        Thread.sleep(700);
+        driver.findElement(By.xpath("//button[@class='r1inOn']")).click(); // going back to the results page
+
+        Thread.sleep(300);
+
+        String viewed = driver.findElement(By.xpath("//parent ::div/following-sibling::div/p")).getText(); // checking if the viewed result is marked as viewed
+        Assert.assertEquals(viewed, "Viewed", "The link is not marked as viewed");
+        Thread.sleep(500);
+        driver.quit();
     }
 }
